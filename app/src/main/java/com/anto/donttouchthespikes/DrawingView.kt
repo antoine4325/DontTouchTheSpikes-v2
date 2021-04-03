@@ -18,6 +18,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
     lateinit var thread: Thread
     var totalElapsedTime: Double = 0.0
     var gameOver = false
+    lateinit var parois: Array<Paroi>
 
     init {
         backgroundPaint.color = Color.WHITE
@@ -32,7 +33,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
             canvas = holder.lockCanvas()
             canvas.drawRect(0f, 0f, canvas.width.toFloat(),
                     canvas.height.toFloat(), backgroundPaint)
-
+            for (i in parois) i.draw(canvas)
             holder.unlockCanvasAndPost(canvas)
         }
     }
@@ -50,6 +51,8 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
         super.onSizeChanged(w, h, oldw, oldh)
         screenWidth = w.toFloat()
         screenHeight = h.toFloat()
+        parois = arrayOf(Paroi(0f, 0f, 0f, screenHeight),
+                Paroi(screenWidth, 0f, screenWidth, screenHeight))
 
         newGame()
     }
