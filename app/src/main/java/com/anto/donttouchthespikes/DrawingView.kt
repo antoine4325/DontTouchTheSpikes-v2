@@ -18,7 +18,10 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
     lateinit var thread: Thread
     var totalElapsedTime: Double = 0.0
     var gameOver = false
+    var nbrTouche = 0
+    val nbrSlotsPiques = 12
     lateinit var parois: Array<Paroi>
+    val bonbon = Bonbon(context)
 
     init {
         backgroundPaint.color = Color.WHITE
@@ -34,6 +37,8 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
             canvas.drawRect(0f, 0f, canvas.width.toFloat(),
                     canvas.height.toFloat(), backgroundPaint)
             for (i in parois) i.draw(canvas)
+            //bonbon.dessine(canvas)
+
             holder.unlockCanvasAndPost(canvas)
         }
     }
