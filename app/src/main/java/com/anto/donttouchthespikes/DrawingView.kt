@@ -19,8 +19,11 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
     lateinit var thread: Thread
     var totalElapsedTime: Double = 0.0
     var gameOver = false
-    lateinit var parois: Array<Paroi>
-    val oiseau = Oiseau(450F,750F,200F)
+    var parois: Array<Paroi> = arrayOf(Paroi(0f, 0f, 0f, 0f),
+            Paroi(0f, 0f, 0f, 0f),
+            Paroi(0f, 0f, 0f, 0f),
+            Paroi(0f, 0f, 0f, 0f))
+    var oiseau = Oiseau(450F,750F,200F)
 
     init {
         backgroundPaint.color = Color.WHITE
@@ -50,6 +53,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
                 Paroi(0f,0f, screenWidth, 50f),
                 Paroi(0f, screenHeight, screenWidth, screenHeight-50f)
         )
+        oiseau = Oiseau(450F,750F,200F)
 
         newGame()
     }
