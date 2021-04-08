@@ -25,9 +25,28 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
             Paroi(0f, 0f, 0f, 0f))
     var oiseau = Oiseau(450F,750F,200F)
 
+
     init {
         backgroundPaint.color = Color.WHITE
     }
+
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        screenWidth = w.toFloat()
+        screenHeight = h.toFloat()
+        parois = arrayOf(Paroi(0f, 0f, 50f, screenHeight),
+            Paroi(screenWidth, 0f, screenWidth-50f, screenHeight),
+            Paroi(0f,0f, screenWidth, 50f),
+            Paroi(0f, screenHeight, screenWidth, screenHeight-50f)
+        )
+        oiseau = Oiseau(450F,750F,200F)
+
+
+        newGame()
+    }
+
+
+
 
 
     override fun onTouchEvent(e: MotionEvent): Boolean {
@@ -44,19 +63,6 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
         oiseau.touch()
     }
 
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        super.onSizeChanged(w, h, oldw, oldh)
-        screenWidth = w.toFloat()
-        screenHeight = h.toFloat()
-        parois = arrayOf(Paroi(0f, 0f, 50f, screenHeight),
-                Paroi(screenWidth, 0f, screenWidth-50f, screenHeight),
-                Paroi(0f,0f, screenWidth, 50f),
-                Paroi(0f, screenHeight, screenWidth, screenHeight-50f)
-        )
-        oiseau = Oiseau(450F,750F,200F)
-
-        newGame()
-    }
 
     fun updatePositions(elapsedTimeMS: Double) {
         val interval = elapsedTimeMS / 1000.0

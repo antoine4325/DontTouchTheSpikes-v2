@@ -12,8 +12,8 @@ class Oiseau(var x: Float, var y: Float, val diametre : Float) {
     val OiseauPaint = Paint()
 
     val r = RectF(x, y, x+diametre, y + diametre)   //rectangle de l'oiseau
-    var dx = 0.5F
-    var dy = -0.5F
+    var dx = 5F
+    var dy = 2F
 
     init {
         OiseauPaint.color=Color.RED
@@ -31,14 +31,27 @@ class Oiseau(var x: Float, var y: Float, val diametre : Float) {
     }
 
     fun update(lesParois: Array<Paroi>) {
-        r.offset(5.0f*dx, 5.0f*dy)
+        r.offset(dx, dy)
         for (p in lesParois){
             p.gereOiseau(this)
         }
 
     }
 
-    fun touch() {}
+    fun touch() {
+        dy *=-8F
+        var ok = true
+        val InitialTime = System.currentTimeMillis()
+        while (ok){
+            val SecondTime = System.currentTimeMillis()
+            val Delta = SecondTime - InitialTime
+            if (Delta >= 100){
+                ok = false
+            }
+        }
+        dy*=-0.125F
+
+    }
 
 
 
