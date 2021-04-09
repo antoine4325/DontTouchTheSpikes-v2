@@ -26,7 +26,6 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
             Paroi(0f, 0f, 0f, 0f),
             Paroi(0f, 0f, 0f, 0f))
     var oiseau = Oiseau(450F,750F,200F)
-    val bonbon = Bonbon(context)
 
     init {
         backgroundPaint.color = Color.WHITE
