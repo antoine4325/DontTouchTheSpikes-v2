@@ -19,12 +19,14 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
     lateinit var thread: Thread
     var totalElapsedTime: Double = 0.0
     var gameOver = false
+    var nbrTouche = 0
+    val nbrSlotsPiques = 12
     var parois: Array<Paroi> = arrayOf(Paroi(0f, 0f, 0f, 0f),
             Paroi(0f, 0f, 0f, 0f),
             Paroi(0f, 0f, 0f, 0f),
             Paroi(0f, 0f, 0f, 0f))
     var oiseau = Oiseau(450F,750F,200F)
-
+    val bonbon = Bonbon(context)
 
     init {
         backgroundPaint.color = Color.WHITE
@@ -41,14 +43,9 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
         )
         oiseau = Oiseau(450F,750F,200F)
 
-
         newGame()
     }
-
-
-
-
-
+  
     override fun onTouchEvent(e: MotionEvent): Boolean {
         val action = e.action
         if (action == MotionEvent.ACTION_DOWN
