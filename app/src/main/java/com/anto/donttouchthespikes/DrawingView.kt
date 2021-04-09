@@ -8,6 +8,7 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
+import java.util.logging.Handler
 
 class DrawingView @JvmOverloads constructor(context: Context, attributes: AttributeSet? = null, defStyleAttr: Int = 0) : SurfaceView(context, attributes,defStyleAttr), SurfaceHolder.Callback, Runnable {
     lateinit var canvas: Canvas
@@ -18,43 +19,65 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
     lateinit var thread: Thread
     var totalElapsedTime: Double = 0.0
     var gameOver = false
-    lateinit var parois: Array<Paroi>
+    var parois: Array<Paroi> = arrayOf(Paroi(0f, 0f, 0f, 0f),
+            Paroi(0f, 0f, 0f, 0f),
+            Paroi(0f, 0f, 0f, 0f),
+            Paroi(0f, 0f, 0f, 0f))
+    var oiseau = Oiseau(450F,750F,200F)
+
 
     init {
         backgroundPaint.color = Color.WHITE
-    }
-
-    fun updatePositions(elapsedTimeMS: Double) {
-        val interval = elapsedTimeMS / 1000.0
-    }
-
-    fun draw() {
-        if (holder.surface.isValid) {
-            canvas = holder.lockCanvas()
-            canvas.drawRect(0f, 0f, canvas.width.toFloat(),
-                    canvas.height.toFloat(), backgroundPaint)
-            for (i in parois) i.draw(canvas)
-            holder.unlockCanvasAndPost(canvas)
-        }
-    }
-
-    override fun onTouchEvent(e: MotionEvent): Boolean {
-        val action = e.action
-        if (action == MotionEvent.ACTION_DOWN
-                || action == MotionEvent.ACTION_MOVE) {
-
-        }
-        return true
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         screenWidth = w.toFloat()
         screenHeight = h.toFloat()
-        parois = arrayOf(Paroi(0f, 0f, 0f, screenHeight),
-                Paroi(screenWidth, 0f, screenWidth, screenHeight))
+        parois = arrayOf(Paroi(0f, 0f, 50f, screenHeight),
+            Paroi(screenWidth, 0f, screenWidth-50f, screenHeight),
+            Paroi(0f,0f, screenWidth, 50f),
+            Paroi(0f, screenHeight, screenWidth, screenHeight-50f)
+        )
+        oiseau = Oiseau(450F,750F,200F)
+
 
         newGame()
+    }
+
+
+
+
+
+    override fun onTouchEvent(e: MotionEvent): Boolean {
+        val action = e.action
+        if (action == MotionEvent.ACTION_DOWN
+                || action == MotionEvent.ACTION_MOVE) {
+            OiseauTouch()
+
+        }
+        return true
+    }
+
+    fun OiseauTouch() {
+        oiseau.touch()
+    }
+
+
+    fun updatePositions(elapsedTimeMS: Double) {
+        val interval = elapsedTimeMS / 1000.0
+        oiseau.update(parois)
+    }
+
+    fun draw() {
+        if (holder.surface.isValid) {
+            canvas = holder.lockCanvas()
+            canvas.drawRect(0f, 0f, canvas.width.toFloat(),
+                canvas.height.toFloat(), backgroundPaint)
+            for (i in parois) i.draw(canvas)
+            oiseau.draw(canvas)
+            holder.unlockCanvasAndPost(canvas)
+        }
     }
 
     fun gameOver() {
