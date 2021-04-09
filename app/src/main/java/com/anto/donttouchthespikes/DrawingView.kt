@@ -36,11 +36,11 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
         screenWidth = w.toFloat()
         screenHeight = h.toFloat()
         parois = arrayOf(Paroi(0f, 0f, 50f, screenHeight),
-            Paroi(screenWidth, 0f, screenWidth-50f, screenHeight),
+            Paroi(screenWidth-50f, 0f, screenWidth, screenHeight),
             Paroi(0f,0f, screenWidth, 50f),
-            Paroi(0f, screenHeight, screenWidth, screenHeight-50f)
+            Paroi(0f, screenHeight-50f, screenWidth, screenHeight)
         )
-        oiseau = Oiseau(450F,750F,200F)
+        oiseau = Oiseau(450F,750F,100F)
 
         newGame()
     }
@@ -61,8 +61,8 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
 
 
     fun updatePositions(elapsedTimeMS: Double) {
-        val interval = elapsedTimeMS / 1000.0
-        oiseau.update(parois)
+        val interval = (elapsedTimeMS / 1000.0).toFloat()
+        oiseau.update(parois, interval)
     }
 
     fun draw() {
