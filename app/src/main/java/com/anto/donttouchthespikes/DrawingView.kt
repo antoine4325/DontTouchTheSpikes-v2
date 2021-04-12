@@ -23,7 +23,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
             Paroi(0f, 0f, 0f, 0f),
             Paroi(0f, 0f, 0f, 0f),
             Paroi(0f, 0f, 0f, 0f))
-    var oiseau = Oiseau(450F,750F,200F)
+    var oiseau = Oiseau(450F, 750F, 100F)
 
 
     init {
@@ -39,7 +39,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
             Paroi(0f,0f, screenWidth, 50f),
             Paroi(0f, screenHeight, screenWidth, screenHeight-50f)
         )
-        oiseau = Oiseau(450F,750F,200F)
+        oiseau = Oiseau(screenWidth/2,screenHeight/2,100F)
 
 
         newGame()
@@ -65,7 +65,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
 
 
     fun updatePositions(elapsedTimeMS: Double) {
-        val interval = elapsedTimeMS / 1000.0
+        val interval = (elapsedTimeMS / 1000.0).toFloat()
         oiseau.update(parois, interval)
     }
 

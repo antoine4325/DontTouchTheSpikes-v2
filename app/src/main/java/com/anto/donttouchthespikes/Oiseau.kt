@@ -8,30 +8,34 @@ import java.util.*
 import java.util.logging.Handler
 import kotlin.coroutines.*
 
+
+
 class Oiseau(var x: Float, var y: Float, val diametre : Float) {
-    val OiseauPaint = Paint()
+    val oiseauPaint = Paint()
 
     val r = RectF(x, y, x+diametre, y + diametre)   //rectangle de l'oiseau
-    var dx = 1F
-    var dy = 1F
+    var vx = 700F
+    var vy = -1150F
+    val ay = 3000F
 
     init {
-        OiseauPaint.color=Color.RED
+        oiseauPaint.color=Color.RED
     }
 
 
 
     fun draw(canvas: Canvas?) {
-        canvas?.drawOval(r, OiseauPaint)
+        canvas?.drawOval(r, oiseauPaint)
     }
 
     fun changeDirectionx() {
-        this.dx = -dx
-        r.offset(3.0F*dx, 0F)
+        this.vx = -vx
+        r.offset(0.01F*vx, 0F)
     }
 
-    fun update(lesParois: Array<Paroi>, interval: Double) {
-        r.offset((500*interval*dx).toFloat(), (500*interval*dy).toFloat())
+    fun update(lesParois: Array<Paroi>, interval: Float) {
+        vy+=interval*ay
+        r.offset(vx*interval, vy*interval)
         for (p in lesParois){
             p.gereOiseau(this)
         }
@@ -39,18 +43,7 @@ class Oiseau(var x: Float, var y: Float, val diametre : Float) {
     }
 
     fun touch() {
-        dy *=-4F
-        var ok = true
-        val InitialTime = System.currentTimeMillis()
-        while (ok){
-            val SecondTime = System.currentTimeMillis()
-            val Delta = SecondTime - InitialTime
-            if (Delta >= 100){
-                ok = false
-            }
-        }
-        dy*=-0.25F
-
+        vy =-1150F
     }
 
 
