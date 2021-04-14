@@ -8,7 +8,7 @@ import java.util.*
 import java.util.logging.Handler
 import kotlin.coroutines.*
 
-class Oiseau(var x: Float, var y: Float, val diametre : Float) {
+class Oiseau(x: Float, y: Float, diametre : Float, val view: DrawingView) {
     val oiseauPaint = Paint()
 
     val r = RectF(x, y, x+diametre, y + diametre)   //rectangle de l'oiseau
@@ -20,8 +20,6 @@ class Oiseau(var x: Float, var y: Float, val diametre : Float) {
         oiseauPaint.color=Color.RED
     }
 
-
-
     fun draw(canvas: Canvas?) {
         canvas?.drawOval(r, oiseauPaint)
     }
@@ -29,14 +27,15 @@ class Oiseau(var x: Float, var y: Float, val diametre : Float) {
     fun changeDirectionx() {
         this.vx = -vx
         r.offset(0.01F*vx, 0F)
+        view.nbrTouche ++
+        view.checkColor()
     }
 
     fun update(lesParois: Array<Paroi>, interval: Float) {
         vy+=interval*ay
         r.offset(vx*interval, vy*interval)
-        for (p in lesParois){
-            p.gereOiseau(this)
-        }
+        if (RectF.intersects(r, lesParois[0].paroi)) changeDirectionx()
+        else if (RectF.intersects(r, lesParois[1].paroi)) changeDirectionx()
 
     }
 

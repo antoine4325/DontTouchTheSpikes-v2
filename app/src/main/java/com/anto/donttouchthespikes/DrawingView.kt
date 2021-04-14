@@ -4,11 +4,13 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.media.MediaPlayer
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import java.util.logging.Handler
+import kotlin.random.Random
 
 class DrawingView @JvmOverloads constructor(context: Context, attributes: AttributeSet? = null, defStyleAttr: Int = 0) : SurfaceView(context, attributes,defStyleAttr), SurfaceHolder.Callback, Runnable {
     lateinit var canvas: Canvas
@@ -21,11 +23,15 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
     var gameOver = false
     var nbrTouche = 0
     val nbrSlotsPiques = 12
+    val random = Random
+    val couleurs = arrayOf(Color.BLACK, Color.BLUE, Color.CYAN, Color.DKGRAY, Color.GRAY,
+            Color.GREEN, Color.LTGRAY, Color.MAGENTA, Color.RED, Color.WHITE, Color.YELLOW)
+    val mp = MediaPlayer.create(context, R.raw.le_temps_est_bon)
     var parois: Array<Paroi> = arrayOf(Paroi(0f, 0f, 0f, 0f),
             Paroi(0f, 0f, 0f, 0f),
             Paroi(0f, 0f, 0f, 0f),
             Paroi(0f, 0f, 0f, 0f))
-    var oiseau = Oiseau(450F,750F,200F)
+    var oiseau = Oiseau(450F,750F,100F, this)
 
     init {
         backgroundPaint.color = Color.WHITE
@@ -35,12 +41,12 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
         super.onSizeChanged(w, h, oldw, oldh)
         screenWidth = w.toFloat()
         screenHeight = h.toFloat()
-        parois = arrayOf(Paroi(0f, 0f, 50f, screenHeight),
-            Paroi(screenWidth-50f, 0f, screenWidth, screenHeight),
-            Paroi(0f,0f, screenWidth, 50f),
-            Paroi(0f, screenHeight-50f, screenWidth, screenHeight)
+        parois = arrayOf(Paroi(0f, 0f, 50f, screenHeight), //gauche
+            Paroi(screenWidth-50f, 0f, screenWidth, screenHeight), //droite
+            Paroi(0f,0f, screenWidth, 50f), //haut
+            Paroi(0f, screenHeight-50f, screenWidth, screenHeight) //bas
         )
-        oiseau = Oiseau(450F,750F,100F)
+        oiseau = Oiseau(450F,750F,100F, this)
 
         newGame()
     }
@@ -49,16 +55,11 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
         val action = e.action
         if (action == MotionEvent.ACTION_DOWN
                 || action == MotionEvent.ACTION_MOVE) {
-            OiseauTouch()
+            oiseau.touch()
 
         }
         return true
     }
-
-    fun OiseauTouch() {
-        oiseau.touch()
-    }
-
 
     fun updatePositions(elapsedTimeMS: Double) {
         val interval = (elapsedTimeMS / 1000.0).toFloat()
@@ -93,6 +94,10 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
         }
     }
 
+    fun checkColor() {
+        if (nbrTouche%5 == 0) backgroundPaint.color=couleurs[random.nextInt(0, couleurs.size)]
+    }
+
     override fun run() {
         var previousFrameTime = System.currentTimeMillis()
         while (drawing) {
@@ -108,12 +113,14 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
     fun pause() {
         drawing = false
         thread.join()
+        mp.pause()
     }
 
     fun resume() {
         drawing = true
         thread = Thread(this)
         thread.start()
+        mp.start()
     }
 
     override fun surfaceCreated(holder: SurfaceHolder) {
