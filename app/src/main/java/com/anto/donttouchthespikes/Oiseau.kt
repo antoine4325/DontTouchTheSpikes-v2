@@ -4,6 +4,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
+import androidx.fragment.app.FragmentActivity
 import java.util.*
 import java.util.logging.Handler
 import kotlin.coroutines.*
@@ -17,6 +18,7 @@ class Oiseau(var x: Float, var y: Float, val diametre : Float) {
     var vx = 700F
     var vy = -1150F
     val ay = 3000F
+
 
     init {
         oiseauPaint.color=Color.RED
@@ -36,6 +38,8 @@ class Oiseau(var x: Float, var y: Float, val diametre : Float) {
     fun update(lesParois: Array<Paroi>, interval: Float) {
         vy+=interval*ay
         r.offset(vx*interval, vy*interval)
+        y += vy*interval
+        x += vx*interval
         for (p in lesParois){
             p.gereOiseau(this)
         }
