@@ -39,10 +39,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
             Paroi(0f, 0f, 0f, 0f),
             Paroi(0f, 0f, 0f, 0f))
     var oiseau = Oiseau(450F,750F,100F, this)
-
     val activity = context as FragmentActivity
-
-
 
     init {
         backgroundPaint.color = Color.WHITE
@@ -56,12 +53,14 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
     }
 
     fun reset() {
+        nbrTouche = 0
         parois = arrayOf(Paroi(0f, 0f, 50f, screenHeight), //gauche
                 Paroi(screenWidth-50f, 0f, screenWidth, screenHeight), //droite
                 Paroi(0f,0f, screenWidth, 50f), //haut
                 Paroi(0f, screenHeight-50f, screenWidth, screenHeight) //bas
         )
         oiseau.reset(screenWidth, screenHeight)
+        backgroundPaint.color = Color.WHITE
     }
 
     override fun onTouchEvent(e: MotionEvent): Boolean {
@@ -96,6 +95,8 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
     }
 
     fun gameOver() {
+        mp.stop()
+        mp.prepare()
         drawing = false
         showGameOverDialog("Vous avez perdu!")
         gameOver = true
@@ -108,6 +109,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
             gameOver = false
             thread = Thread(this)
             thread.start()
+            mp.start()
         }
     }
 
