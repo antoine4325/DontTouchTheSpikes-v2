@@ -49,6 +49,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
         super.onSizeChanged(w, h, oldw, oldh)
         screenWidth = w.toFloat()
         screenHeight = h.toFloat()
+
         newGame()
     }
 
