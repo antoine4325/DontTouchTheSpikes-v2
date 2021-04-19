@@ -44,22 +44,17 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
         super.onSizeChanged(w, h, oldw, oldh)
         screenWidth = w.toFloat()
         screenHeight = h.toFloat()
-        parois = arrayOf(Paroi(0f, 0f, 50f, screenHeight),
-            Paroi(screenWidth, 0f, screenWidth-50f, screenHeight),
-            Paroi(0f,0f, screenWidth, 50f),
-            Paroi(0f, screenHeight, screenWidth, screenHeight-50f)
-        )
-        oiseau.x = screenWidth/2
-        oiseau.y = screenHeight/2
-        //oiseau = Oiseau(screenWidth/2,screenHeight/2,100F)
-
-
         newGame()
     }
 
-
-
-
+    fun reset() {
+        parois = arrayOf(Paroi(0f, 0f, 50f, screenHeight), //gauche
+                Paroi(screenWidth-50f, 0f, screenWidth, screenHeight), //droite
+                Paroi(0f,0f, screenWidth, 50f), //haut
+                Paroi(0f, screenHeight-50f, screenWidth, screenHeight) //bas
+        )
+        oiseau.reset(screenWidth, screenHeight)
+    }
 
     override fun onTouchEvent(e: MotionEvent): Boolean {
         val action = e.action
@@ -105,6 +100,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
     }
 
     fun newGame() {
+        reset()
         drawing = true
         if (gameOver) {
             gameOver = false

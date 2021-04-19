@@ -11,7 +11,7 @@ import kotlin.coroutines.*
 
 
 
-class Oiseau(var x: Float, var y: Float, val diametre : Float) {
+class Oiseau(x: Float, y: Float, val diametre : Float) {
     val oiseauPaint = Paint()
 
     val r = RectF(x, y, x+diametre, y + diametre)   //rectangle de l'oiseau
@@ -24,7 +24,14 @@ class Oiseau(var x: Float, var y: Float, val diametre : Float) {
         oiseauPaint.color=Color.RED
     }
 
-
+    fun reset(sW: Float, sH: Float) {
+        r.left = sW/2
+        r.top = sH/2
+        r.right = sW/2 + diametre
+        r.bottom = sH/2 + diametre
+        vx = 700F
+        vy = -1150F
+    }
 
     fun draw(canvas: Canvas?) {
         canvas?.drawOval(r, oiseauPaint)
@@ -38,8 +45,6 @@ class Oiseau(var x: Float, var y: Float, val diametre : Float) {
     fun update(lesParois: Array<Paroi>, interval: Float) {
         vy+=interval*ay
         r.offset(vx*interval, vy*interval)
-        y += vy*interval
-        x += vx*interval
         for (p in lesParois){
             p.gereOiseau(this)
         }
