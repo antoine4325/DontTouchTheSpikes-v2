@@ -38,7 +38,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
             Paroi(0f, 0f, 0f, 0f),
             Paroi(0f, 0f, 0f, 0f),
             Paroi(0f, 0f, 0f, 0f))
-    var oiseau = Oiseau(450F,750F,100F, this)
+    var oiseau = Oiseau(450F,750F,2F, this, context)
     val activity = context as FragmentActivity
 
     init {
@@ -89,7 +89,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
             canvas.drawRect(0f, 0f, canvas.width.toFloat(),
                 canvas.height.toFloat(), backgroundPaint)
             for (i in parois) i.draw(canvas)
-            oiseau.draw(canvas)
+            oiseau.dessine(canvas)
             holder.unlockCanvasAndPost(canvas)
         }
     }
