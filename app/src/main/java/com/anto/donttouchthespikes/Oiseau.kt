@@ -4,11 +4,12 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
+import androidx.fragment.app.FragmentActivity
 import java.util.*
 import java.util.logging.Handler
 import kotlin.coroutines.*
 
-class Oiseau(x: Float, y: Float, diametre : Float, val view: DrawingView) {
+class Oiseau(x: Float, y: Float, val diametre : Float, val view: DrawingView) {
     val oiseauPaint = Paint()
 
     val r = RectF(x, y, x+diametre, y + diametre)   //rectangle de l'oiseau
@@ -18,6 +19,15 @@ class Oiseau(x: Float, y: Float, diametre : Float, val view: DrawingView) {
 
     init {
         oiseauPaint.color=Color.RED
+    }
+
+    fun reset(sW: Float, sH: Float) {
+        r.left = sW/2
+        r.top = sH/2
+        r.right = sW/2 + diametre
+        r.bottom = sH/2 + diametre
+        vx = 700F
+        vy = -1150F
     }
 
     fun draw(canvas: Canvas?) {
