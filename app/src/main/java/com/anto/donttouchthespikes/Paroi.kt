@@ -14,9 +14,4 @@ class Paroi (x1: Float, y1: Float, x2: Float, y2: Float) {
         canvas.drawRect(paroi, paroiPaint)
     }
 
-    fun gereOiseau(oiseau: Oiseau) {
-
-        if (RectF.intersects(paroi, oiseau.r)) oiseau.changeDirectionx()
-        }
-
 }
