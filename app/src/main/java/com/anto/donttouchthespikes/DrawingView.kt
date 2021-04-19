@@ -44,8 +44,10 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
         super.onSizeChanged(w, h, oldw, oldh)
         screenWidth = w.toFloat()
         screenHeight = h.toFloat()
+
         newGame()
     }
+
 
     fun reset() {
         parois = arrayOf(Paroi(0f, 0f, 50f, screenHeight), //gauche
