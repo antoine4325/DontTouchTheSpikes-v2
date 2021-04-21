@@ -40,6 +40,8 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
             Paroi(0f, 0f, 0f, 0f))
     var oiseau = Oiseau(450F,750F,2F, this, context)
     val activity = context as FragmentActivity
+    var nbrVies = 1
+    val bonbon = Bonbon(context)
 
     init {
         backgroundPaint.color = Color.WHITE
@@ -55,12 +57,14 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
 
     fun reset() {
         nbrTouche = 0
+        nbrVies = 1
         parois = arrayOf(Paroi(0f, 0f, 50f, screenHeight), //gauche
                 Paroi(screenWidth-50f, 0f, screenWidth, screenHeight), //droite
                 Paroi(0f,0f, screenWidth, 50f), //haut
                 Paroi(0f, screenHeight-50f, screenWidth, screenHeight) //bas
         )
         oiseau.reset(screenWidth, screenHeight)
+        bonbon.reset()
         backgroundPaint.color = Color.WHITE
     }
 
@@ -76,21 +80,17 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
 
     fun updatePositions(elapsedTimeMS: Double) {
         val interval = (elapsedTimeMS / 1000.0).toFloat()
-        oiseau.update(parois, interval)
-        for (p in parois){
-            if ((p== parois[3]||p==parois[2]) && RectF.intersects(p.paroi,oiseau.r)){
-                gameOver()
-            }
-        }
+        oiseau.update(interval)
     }
 
     fun draw() {
         if (holder.surface.isValid) {
             canvas = holder.lockCanvas()
             canvas.drawRect(0f, 0f, canvas.width.toFloat(),
-                canvas.height.toFloat(), backgroundPaint)
+                    canvas.height.toFloat(), backgroundPaint)
             for (i in parois) i.draw(canvas)
             oiseau.dessine(canvas)
+            bonbon.dessine(canvas)
             holder.unlockCanvasAndPost(canvas)
         }
     }
