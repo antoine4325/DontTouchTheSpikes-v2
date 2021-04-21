@@ -5,9 +5,15 @@ import android.graphics.*
 import android.view.View
 
 class Bonbon(context: Context): View(context) {
+    var visible = true
     var bmp: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.bonbon)
-    val carre = Rect(0, 0, 120, 120)
+    val carre = RectF(50f, 100f, 170f, 220f)
+
     fun dessine(canvas: Canvas) {
-        canvas.drawBitmap(bmp, null, carre, null)
+        if (visible) canvas.drawBitmap(bmp, null, carre, null)
+    }
+
+    fun reset() {
+        visible = true
     }
 }
