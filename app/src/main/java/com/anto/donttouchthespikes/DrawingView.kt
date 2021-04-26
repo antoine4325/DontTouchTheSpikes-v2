@@ -4,11 +4,8 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
+import android.graphics.*
 import android.media.MediaPlayer
-import android.graphics.RectF
 import android.os.Bundle
 import android.util.AttributeSet
 import android.view.MotionEvent
@@ -39,6 +36,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
             Paroi(0f, 0f, 0f, 0f),
             Paroi(0f, 0f, 0f, 0f))
     var oiseau = Oiseau(450F,750F,2F, this, context)
+    val spikes = Spikes()
     val activity = context as FragmentActivity
 
     init {
@@ -91,6 +89,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
                 canvas.height.toFloat(), backgroundPaint)
             for (i in parois) i.draw(canvas)
             oiseau.dessine(canvas)
+            spikes.drawSpikeParoi(canvas)
             holder.unlockCanvasAndPost(canvas)
         }
     }
