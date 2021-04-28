@@ -4,11 +4,8 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
+import android.graphics.*
 import android.media.MediaPlayer
-import android.graphics.RectF
 import android.os.Bundle
 import android.util.AttributeSet
 import android.view.MotionEvent
@@ -39,6 +36,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
             Paroi(0f, 0f, 0f, 0f),
             Paroi(0f, 0f, 0f, 0f))
     var oiseau = Oiseau(450F,750F,2F, this, context)
+    val spikes = Spikes(this)
     val activity = context as FragmentActivity
 
     init {
@@ -57,8 +55,8 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
         nbrTouche = 0
         parois = arrayOf(Paroi(0f, 0f, 50f, screenHeight), //gauche
                 Paroi(screenWidth-50f, 0f, screenWidth, screenHeight), //droite
-                Paroi(0f,0f, screenWidth, 50f), //haut
-                Paroi(0f, screenHeight-50f, screenWidth, screenHeight) //bas
+                Paroi(0f,0f, screenWidth, 50f + 105f), //haut
+                Paroi(0f, screenHeight - 155f, screenWidth, screenHeight) //bas
         )
         oiseau.reset(screenWidth, screenHeight)
         backgroundPaint.color = Color.WHITE
@@ -76,7 +74,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
 
     fun updatePositions(elapsedTimeMS: Double) {
         val interval = (elapsedTimeMS / 1000.0).toFloat()
-        oiseau.update(parois, interval)
+        oiseau.update(interval)
         for (p in parois){
             if ((p== parois[3]||p==parois[2]) && RectF.intersects(p.paroi,oiseau.r)){
                 gameOver()
@@ -91,6 +89,9 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
                 canvas.height.toFloat(), backgroundPaint)
             for (i in parois) i.draw(canvas)
             oiseau.dessine(canvas)
+            spikes.drawSpikeParoi(canvas)
+            spikes.drawSpikesRight(canvas, (1..12).random(), 5)
+            spikes.drawSpikesLeft(canvas, (1..12).random(), 5)
             holder.unlockCanvasAndPost(canvas)
         }
     }

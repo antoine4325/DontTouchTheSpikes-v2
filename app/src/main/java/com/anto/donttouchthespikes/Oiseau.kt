@@ -10,7 +10,6 @@ import kotlin.coroutines.*
 
 class Oiseau(x: Float, y: Float, val echelle : Float, val view: DrawingView, context: Context): View(context) {
     val oiseauPaint = Paint()
-
     //val r = RectF(x, y, x+diametre, y + diametre)   //rectangle de l'oiseau
     var vx = 700F
     var vy = -1150F
@@ -45,12 +44,14 @@ class Oiseau(x: Float, y: Float, val echelle : Float, val view: DrawingView, con
         view.checkColor()
     }
 
-    fun update(lesParois: Array<Paroi>, interval: Float) {
+    fun update(interval: Float) {
         vy+=interval*ay
         r.offset(vx*interval, vy*interval)
-        if (RectF.intersects(r, lesParois[0].paroi)) changeDirectionx()
-        else if (RectF.intersects(r, lesParois[1].paroi)) changeDirectionx()
+        if (RectF.intersects(r, view.parois[0].paroi)
+                || RectF.intersects(r, view.parois[1].paroi)) changeDirectionx()
 
+        else if (RectF.intersects(r, view.parois[2].paroi)
+                || RectF.intersects(r, view.parois[3].paroi)) view.gameOver()
     }
 
     fun touch() {
