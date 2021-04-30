@@ -3,21 +3,18 @@ package com.anto.donttouchthespikes
 import android.content.Context
 import android.graphics.*
 import android.view.View
-import androidx.fragment.app.FragmentActivity
-import java.util.*
-import java.util.logging.Handler
-import kotlin.coroutines.*
+import kotlin.random.Random
 
-class Oiseau(x: Float, y: Float, val echelle : Float, val view: DrawingView, context: Context): View(context) {
+class Oiseau(val echelle : Float, val view: DrawingView, context: Context): View(context) {
     val oiseauPaint = Paint()
 
-    //val r = RectF(x, y, x+diametre, y + diametre)   //rectangle de l'oiseau
     var vx = 700F
     var vy = -1150F
     val ay = 3000F
     var bmp: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.oiseau)
     val r = RectF(0F, 0F, 95F, 63F)
     var flipped = false
+    val random = Random
 
     init {
         oiseauPaint.color=Color.RED
@@ -40,9 +37,13 @@ class Oiseau(x: Float, y: Float, val echelle : Float, val view: DrawingView, con
     fun changeDirectionx() {
         bmp = bmp.flip(-1f, 1f)
         vx = -vx
-        r.offset(0.01F*vx, 0F)
+        r.offset(vx*0.01f, 0F)
         view.nbrTouche ++
         view.checkColor()
+        if (view.nbrTouche == view.bonbon.nextVisible) {
+            view.bonbon.carre.offsetTo(150f, random.nextFloat()*view.screenHeight*0.9f+50)
+            view.bonbon.visible = true
+        }
     }
 
     fun update(interval: Float) {
@@ -51,11 +52,16 @@ class Oiseau(x: Float, y: Float, val echelle : Float, val view: DrawingView, con
         if (RectF.intersects(r, view.parois[0].paroi)
                 || RectF.intersects(r, view.parois[1].paroi)) changeDirectionx()
         else if (view.bonbon.visible && RectF.intersects(r, view.bonbon.carre)) {
-            view.nbrVies++
-            view.bonbon.visible = false
+            view.bonbon.touch()
         }
         else if (RectF.intersects(r, view.parois[2].paroi)
-                || RectF.intersects(r, view.parois[3].paroi)) view.gameOver()
+                || RectF.intersects(r, view.parois[3].paroi)) {
+            view.nbrVies --
+            if (view.nbrVies > 0) {
+                r.offsetTo(view.screenWidth/2, view.screenHeight/2)
+                touch()
+            }
+        }
 
     }
 

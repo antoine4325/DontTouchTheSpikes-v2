@@ -38,10 +38,10 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
             Paroi(0f, 0f, 0f, 0f),
             Paroi(0f, 0f, 0f, 0f),
             Paroi(0f, 0f, 0f, 0f))
-    var oiseau = Oiseau(450F,750F,2F, this, context)
+    var oiseau = Oiseau(2F, this, context)
     val activity = context as FragmentActivity
     var nbrVies = 1
-    val bonbon = Bonbon(context)
+    val bonbon = Bonbon(context, this)
 
     init {
         backgroundPaint.color = Color.WHITE
@@ -99,8 +99,8 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
         mp.stop()
         mp.prepare()
         drawing = false
-        showGameOverDialog("Vous avez perdu!")
         gameOver = true
+        showGameOverDialog("Vous avez perdu!")
     }
 
     fun newGame() {
@@ -126,6 +126,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
             totalElapsedTime = elapsedTimeMS / 1000.0
             updatePositions(elapsedTimeMS)
             draw()
+            if (nbrVies <= 0) gameOver()
             previousFrameTime = currentTime
         }
     }
