@@ -52,7 +52,8 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
         screenWidth = w.toFloat()
         screenHeight = h.toFloat()
 
-        newGame()
+        //newGame()
+        firstGame()
     }
 
 
@@ -66,6 +67,17 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
         )
         oiseau.reset(screenWidth, screenHeight)
         bonbon.reset()
+        backgroundPaint.color = Color.WHITE
+    }
+
+    fun firstSet() {
+        parois = arrayOf(Paroi(0f, 0f, 50f, screenHeight), //gauche
+            Paroi(screenWidth-50f, 0f, screenWidth, screenHeight), //droite
+            Paroi(0f,0f, screenWidth, 50f), //haut
+            Paroi(0f, screenHeight-50f, screenWidth, screenHeight) //bas
+        )
+        bonbon.reset()
+        oiseau.firstSet(screenWidth, screenHeight)
         backgroundPaint.color = Color.WHITE
     }
 
@@ -106,6 +118,17 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
 
     fun newGame() {
         reset()
+        drawing = true
+        if (gameOver) {
+            gameOver = false
+            thread = Thread(this)
+            thread.start()
+            mp.start()
+        }
+    }
+
+    fun firstGame() {
+        firstSet()
         drawing = true
         if (gameOver) {
             gameOver = false

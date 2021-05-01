@@ -12,9 +12,14 @@ class Oiseau(x: Float, y: Float, val echelle : Float, val view: DrawingView, con
     val oiseauPaint = Paint()
 
     //val r = RectF(x, y, x+diametre, y + diametre)   //rectangle de l'oiseau
-    var vx = 700F
-    var vy = -1150F
-    val ay = 3000F
+    //var vx = 700F
+    //var vy = -1150F
+    //val ay = 3000F
+
+    var vx=0F
+    var vy=0F
+    var ay =0F
+
     var bmp: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.oiseau)
     val r = RectF(0F, 0F, 95F, 63F)
     var flipped = false
@@ -30,7 +35,18 @@ class Oiseau(x: Float, y: Float, val echelle : Float, val view: DrawingView, con
         r.bottom = sH/2 + 63*echelle
         vx = 700F
         vy = -1150F
+        ay= 3000F
         if (flipped) bmp=bmp.flip(-1f, 1f)
+    }
+
+    fun firstSet(sW: Float, sH: Float) {
+        r.left = sW/2
+        r.top = sH/2
+        r.right = sW/2 + 95*echelle
+        r.bottom = sH/2 + 63*echelle
+        vx = 0F
+        vy = 0F
+        ay = 0F
     }
 
     fun dessine(canvas: Canvas) {
