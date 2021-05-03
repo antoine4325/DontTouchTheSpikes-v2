@@ -14,8 +14,10 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
+import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
+import kotlinx.android.synthetic.main.activity_main.view.*
 import java.util.logging.Handler
 import kotlin.random.Random
 
@@ -29,9 +31,10 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
     var totalElapsedTime: Double = 0.0
     var gameOver = false
     var nbrTouche = 0
+    var record = 0
     val nbrSlotsPiques = 12
     val random = Random
-    val couleurs = arrayOf(Color.BLACK, Color.BLUE, Color.CYAN, Color.DKGRAY, Color.GRAY,
+    val couleurs = arrayOf(Color.BLACK, Color.BLUE, Color.CYAN, Color.DKGRAY,
             Color.GREEN, Color.LTGRAY, Color.MAGENTA, Color.RED, Color.WHITE, Color.YELLOW)
     val mp = MediaPlayer.create(context, R.raw.le_temps_est_bon)
     var parois: Array<Paroi> = arrayOf(Paroi(0f, 0f, 0f, 0f),
@@ -94,7 +97,10 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
     fun updatePositions(elapsedTimeMS: Double) {
         val interval = (elapsedTimeMS / 1000.0).toFloat()
         oiseau.update(interval)
+
     }
+
+
 
     fun draw() {
         if (holder.surface.isValid) {
@@ -112,7 +118,10 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
         mp.stop()
         mp.prepare()
         drawing = false
-        showGameOverDialog("Vous avez perdu!")
+        if (nbrTouche>record)
+        {record= nbrTouche
+        showGameOverDialog("Vous avez battu votre record!!")}
+        else{showGameOverDialog("Vous avez perdu!")}
         gameOver = true
     }
 
@@ -185,6 +194,8 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
             override fun onCreateDialog(bundle: Bundle?): Dialog {
                 val builder = AlertDialog.Builder(getActivity())
                 builder.setTitle(messageId)
+                builder.setMessage("Votre score est:   "+ nbrTouche.toString()+ "\n"
+                        + "Votre record est:    $record")
                 builder.setPositiveButton("Redemarrer une partie",
                         DialogInterface.OnClickListener { _, _->newGame()}
                 )

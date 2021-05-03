@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.*
 import android.view.View
 import androidx.fragment.app.FragmentActivity
+import kotlinx.android.synthetic.main.activity_main.view.*
 import java.util.*
 import java.util.logging.Handler
 import kotlin.coroutines.*
@@ -77,6 +78,8 @@ class Oiseau(x: Float, y: Float, val echelle : Float, val view: DrawingView, con
 
     fun touch() {
         vy =-1150F
+
+
     }
 
     private fun Bitmap.flip(x: Float, y: Float): Bitmap {
