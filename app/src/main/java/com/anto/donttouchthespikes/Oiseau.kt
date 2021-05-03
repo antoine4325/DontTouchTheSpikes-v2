@@ -1,12 +1,10 @@
 package com.anto.donttouchthespikes
 
+import android.graphics.Canvas
 import android.content.Context
 import android.graphics.*
 import android.view.View
-import androidx.fragment.app.FragmentActivity
-import java.util.*
-import java.util.logging.Handler
-import kotlin.coroutines.*
+import com.google.android.material.shape.TriangleEdgeTreatment
 
 class Oiseau(x: Float, y: Float, val echelle : Float, val view: DrawingView, context: Context): View(context) {
     val oiseauPaint = Paint()
@@ -48,10 +46,29 @@ class Oiseau(x: Float, y: Float, val echelle : Float, val view: DrawingView, con
         vy+=interval*ay
         r.offset(vx*interval, vy*interval)
         if (RectF.intersects(r, view.parois[0].paroi)
-                || RectF.intersects(r, view.parois[1].paroi)) changeDirectionx()
+                || RectF.intersects(r, view.parois[1].paroi)) {
+            changeDirectionx()
+            view.spikes.path.reset()
+            view.spikes.drawSpikeParoi()
+            view.spikes.drawSpikesLeft((1..13).random(),(2..7).random())
+            view.spikes.drawSpikesRight((1..5).random(), (2..7).random())
+
+        }
 
         else if (RectF.intersects(r, view.parois[2].paroi)
                 || RectF.intersects(r, view.parois[3].paroi)) view.gameOver()
+
+        /*for (rect in view.spikes.liste1) {
+            if (RectF.intersects(r, rect)) {
+                view.gameOver()
+            }
+        }*/
+        /*for (rect in spikes.liste2) {
+            if (RectF.intersects(r, rect)) {
+                view.gameOver()
+            }
+        }*/
+
     }
 
     fun touch() {
