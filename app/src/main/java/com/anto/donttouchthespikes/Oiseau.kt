@@ -37,6 +37,7 @@ class Oiseau(val echelle : Float, val view: DrawingView, context: Context): View
     fun changeDirectionx() {
         bmp = bmp.flip(-1f, 1f)
         vx = -vx
+        if (vx > 0) vx += 7
         r.offset(vx*0.01f, 0F)
         view.nbrTouche ++
         view.checkColor()

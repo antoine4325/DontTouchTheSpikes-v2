@@ -22,6 +22,7 @@ import kotlin.random.Random
 class DrawingView @JvmOverloads constructor(context: Context, attributes: AttributeSet? = null, defStyleAttr: Int = 0) : SurfaceView(context, attributes,defStyleAttr), SurfaceHolder.Callback, Runnable {
     lateinit var canvas: Canvas
     val backgroundPaint = Paint()
+    val textPaint = Paint()
     var screenWidth = 0f
     var screenHeight = 0f
     var drawing = false
@@ -45,6 +46,8 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
 
     init {
         backgroundPaint.color = Color.WHITE
+        textPaint.color = Color.BLACK
+        textPaint.textSize = 50f
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -88,6 +91,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
             canvas = holder.lockCanvas()
             canvas.drawRect(0f, 0f, canvas.width.toFloat(),
                     canvas.height.toFloat(), backgroundPaint)
+            canvas.drawText("Vies restantes : $nbrVies", screenWidth/3, screenHeight/3, textPaint)
             for (i in parois) i.draw(canvas)
             oiseau.dessine(canvas)
             bonbon.dessine(canvas)
