@@ -1,5 +1,6 @@
 package com.anto.donttouchthespikes
 
+import android.graphics.Canvas
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
@@ -13,7 +14,6 @@ import android.view.SurfaceHolder
 import android.view.SurfaceView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
-import java.util.logging.Handler
 import kotlin.random.Random
 
 class DrawingView @JvmOverloads constructor(context: Context, attributes: AttributeSet? = null, defStyleAttr: Int = 0) : SurfaceView(context, attributes,defStyleAttr), SurfaceHolder.Callback, Runnable {
@@ -60,6 +60,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
         )
         oiseau.reset(screenWidth, screenHeight)
         backgroundPaint.color = Color.WHITE
+
     }
 
     override fun onTouchEvent(e: MotionEvent): Boolean {
@@ -89,9 +90,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
                 canvas.height.toFloat(), backgroundPaint)
             for (i in parois) i.draw(canvas)
             oiseau.dessine(canvas)
-            spikes.drawSpikeParoi(canvas)
-            spikes.drawSpikesRight(canvas, (1..12).random(), 5)
-            spikes.drawSpikesLeft(canvas, (1..12).random(), 5)
+            canvas.drawPath(spikes.path, spikes.paint)
             holder.unlockCanvasAndPost(canvas)
         }
     }
