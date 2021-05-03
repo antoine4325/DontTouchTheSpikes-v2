@@ -50,6 +50,8 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
 
     init {
         backgroundPaint.color = Color.WHITE
+        textPaint.color = Color.BLACK
+        textPaint.textSize = 50f
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
