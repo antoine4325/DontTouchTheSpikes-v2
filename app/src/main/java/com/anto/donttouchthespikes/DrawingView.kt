@@ -30,8 +30,10 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
     lateinit var thread: Thread
     var totalElapsedTime: Double = 0.0
     var gameOver = false
+    val textPaint = Paint()
     var nbrTouche = 0
     var record = 0
+    var firstsetting = false
     val nbrSlotsPiques = 12
     val random = Random
     val couleurs = arrayOf(Color.BLACK, Color.BLUE, Color.CYAN, Color.DKGRAY,
@@ -55,7 +57,6 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
         screenWidth = w.toFloat()
         screenHeight = h.toFloat()
 
-        //newGame()
         firstGame()
     }
 
@@ -70,6 +71,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
         )
         oiseau.reset(screenWidth, screenHeight)
         bonbon.reset()
+        if (firstsetting== false) firstsetting = true
         backgroundPaint.color = Color.WHITE
     }
 
@@ -88,7 +90,8 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
         val action = e.action
         if (action == MotionEvent.ACTION_DOWN
                 || action == MotionEvent.ACTION_MOVE) {
-            oiseau.touch()
+
+            if (firstsetting == true ) oiseau.touch()
 
         }
         return true
@@ -110,6 +113,8 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
             for (i in parois) i.draw(canvas)
             oiseau.dessine(canvas)
             bonbon.dessine(canvas)
+            canvas.drawText("Votre score est:   $nbrTouche ",
+                    30f, 50f, textPaint)
             holder.unlockCanvasAndPost(canvas)
         }
     }
