@@ -9,8 +9,10 @@ class Spikes(val view: DrawingView){
     val paint = Paint()
     var path = Path()
     //val re = RectF(x - halfWidth, y + halfWidth, x + halfWidth, y - halfWidth)
-    val re = RectF(100F, 100F, 400F, 600F)
-    val liste1 = arrayOf(re)
+    //var re = RectF(100F, 100F, 400F, 600F)
+    //val liste1: MutableList<RectF> = mutableListOf(re, re)
+    //val liste2: MutableList<RectF> = mutableListOf(re, re)
+
 
      fun drawSpikeParoi() {
          var x = 105F
@@ -49,19 +51,19 @@ class Spikes(val view: DrawingView){
          val width = 125F
          val halfWidth = width / 2
          if (view.oiseau.vx <= 0) {
-             val elem = liste1.count()
-             liste1.dropLast(elem-1)
+             //val elem = liste1.size
+             //liste1.dropLast(elem-1)
              for (i in 1..nbrSpikes) {
                  path.moveTo(x - halfWidth, y + halfWidth)
                  path.lineTo(x - halfWidth, y - halfWidth)
                  path.lineTo(x , y)
                  path.moveTo(x - halfWidth, y + halfWidth)
                  path.close()
-                 view.canvas.save()
-                 view.canvas.rotate(45F)
-                 val re = RectF(x - halfWidth, y + halfWidth, x + halfWidth, y - halfWidth)
-                 view.canvas.restore()
-                 liste1.plus(re)
+                 //view.canvas.save()
+                 //view.canvas.rotate(45F)
+                 //re = RectF(x - halfWidth, y + halfWidth, x + halfWidth, y - halfWidth)
+                 //view.canvas.restore()
+                 //liste1.add(re)
                  paint.color = Color.DKGRAY
                  y = 280F + (k * width)
              }
@@ -74,19 +76,20 @@ class Spikes(val view: DrawingView){
          var y = 280F
          val width = 125F
          val halfWidth = width / 2
-         val liste2 = arrayOf(view.oiseau.r)
          if (view.oiseau.vx >= 0) {
+             //val elem = liste2.size
+             //liste2.dropLast(elem-1)
              for (i in 1..nbrSpikes) {
                  path.moveTo(x - halfWidth, y)
                  path.lineTo(x ,y - halfWidth)
                  path.lineTo(x ,y + halfWidth)
                  path.moveTo(x - halfWidth, y)
                  path.close()
-                 /*val re = RectF(0F, 0F, 57F, 57F)
-                 // creer un rectangle puis rotation de 45° et le rajouter dans liste
-                 liste2.plus(re)*/
-                 // creer un rectangle puis rotation de 45° et le rajouter dans liste
-
+                 //view.canvas.save()
+                 //view.canvas.rotate(45F)
+                 //re = RectF(x - halfWidth, y + halfWidth, x + halfWidth, y - halfWidth)
+                 //view.canvas.restore()
+                 //liste1.add(re)
                  paint.color = Color.DKGRAY
                  y = 280F + (k * width)
              }

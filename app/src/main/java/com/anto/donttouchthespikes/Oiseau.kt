@@ -58,12 +58,11 @@ class Oiseau(x: Float, y: Float, val echelle : Float, val view: DrawingView, con
         else if (RectF.intersects(r, view.parois[2].paroi)
                 || RectF.intersects(r, view.parois[3].paroi)) view.gameOver()
 
-        for (n in (1 .. view.spikes.liste1.count())) {
-            val rect = view.spikes.liste1.get(n)
+        /*for (rect in view.spikes.liste1) {
             if (RectF.intersects(r, rect)) {
                 view.gameOver()
             }
-        }
+        }*/
         /*for (rect in spikes.liste2) {
             if (RectF.intersects(r, rect)) {
                 view.gameOver()
