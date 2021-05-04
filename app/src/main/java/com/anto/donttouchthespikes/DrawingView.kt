@@ -76,7 +76,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
 
     fun updatePositions(elapsedTimeMS: Double) {
         val interval = (elapsedTimeMS / 1000.0).toFloat()
-        oiseau.update(interval)
+        oiseau.update(interval, spikes)
         for (p in parois){
             if ((p== parois[3]||p==parois[2]) && RectF.intersects(p.paroi,oiseau.r)){
                 gameOver()
@@ -86,11 +86,11 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
             gameOver()
         }*/
 
-        /*for (n in 0.rangeTo(spikes.liste1.size - 1)) {
-            var rect = spikes.liste1.get(n)
+        for (n in spikes.liste1) {
+            //var rect = spikes.liste1.get(n)
 
-            if (oiseau.r.contains(rect)) gameOver()
-        }*/
+            if (oiseau.r.contains(n)) gameOver()
+        }
     }
 
     fun draw() {

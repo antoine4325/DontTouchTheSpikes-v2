@@ -11,7 +11,8 @@ class Spikes(val view: DrawingView){
     var path = Path()
     var re = RectF(0f, 0f, 0f, 0f)
     val re0 = RectF(0f, 0f, 0f, 0f)
-    var liste1: MutableList<RectF> = mutableListOf(re0)
+    //var liste1: MutableList<RectF> = mutableListOf(re0)
+    val liste1=ArrayList<RectF>()
 
      fun drawSpikeParoi() {
          var x = 105F
@@ -44,12 +45,12 @@ class Spikes(val view: DrawingView){
              x += width
          }
      }
-     fun interspikes(oiseau: Oiseau) {
+     /*fun interspikes(oiseau: Oiseau) {
         for (i in liste1) {
             if (oiseau.r.contains(i)) view.gameOver()
         }
 
-     }
+     }*/
      fun drawSpikesLeft() {
          var nbresplibre = 6 - view.oiseau.niveau
          //var nbrSpikes = 13 - 2*nbresplibre
