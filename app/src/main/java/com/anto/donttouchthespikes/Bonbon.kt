@@ -25,5 +25,6 @@ class Bonbon(context: Context, val view: DrawingView): View(context) {
         view.nbrVies++
         visible = false
         nextVisible = view.nbrTouche + random.nextInt(5, 15)
+
     }
 }

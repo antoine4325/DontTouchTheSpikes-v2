@@ -4,13 +4,16 @@ import android.content.Context
 import android.graphics.*
 import android.view.View
 import kotlin.random.Random
+import androidx.fragment.app.FragmentActivity
+import kotlinx.android.synthetic.main.activity_main.view.*
+import java.util.*
+import kotlin.coroutines.*
 
 class Oiseau(val echelle : Float, val view: DrawingView, context: Context): View(context) {
     val oiseauPaint = Paint()
-
-    var vx = 700F
-    var vy = -1150F
-    val ay = 3000F
+    var vx=0F
+    var vy=0F
+    var ay =0F
     var bmp: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.oiseau)
     val r = RectF(0F, 0F, 95F, 63F)
     var flipped = false
@@ -27,7 +30,18 @@ class Oiseau(val echelle : Float, val view: DrawingView, context: Context): View
         r.bottom = sH/2 + 63*echelle
         vx = 700F
         vy = -1150F
+        ay= 3000F
         if (flipped) bmp=bmp.flip(-1f, 1f)
+    }
+
+    fun firstSet(sW: Float, sH: Float) {
+        r.left = sW/2
+        r.top = sH/2
+        r.right = sW/2 + 95*echelle
+        r.bottom = sH/2 + 63*echelle
+        vx = 0F
+        vy = 0F
+        ay = 0F
     }
 
     fun dessine(canvas: Canvas) {
@@ -63,11 +77,12 @@ class Oiseau(val echelle : Float, val view: DrawingView, context: Context): View
                 touch()
             }
         }
-
     }
 
     fun touch() {
         vy =-1150F
+
+
     }
 
     private fun Bitmap.flip(x: Float, y: Float): Bitmap {
