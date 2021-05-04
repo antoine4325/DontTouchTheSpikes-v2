@@ -40,6 +40,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
     val activity = context as FragmentActivity
     val rp = RectF(0F, 280F + (3 * 125F) - 4*(125F/2), 50F, 280F + (3 * 125F) - 6*(125/2) )
 
+
     init {
         backgroundPaint.color = Color.WHITE
     }
@@ -69,7 +70,6 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
         if (action == MotionEvent.ACTION_DOWN
                 || action == MotionEvent.ACTION_MOVE) {
             oiseau.touch()
-
         }
         return true
     }
@@ -82,9 +82,15 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
                 gameOver()
             }
         }
-        if (RectF.intersects(oiseau.r, spikes.re)) {
+        /*if (RectF.intersects(oiseau.r, spikes.re)) {
             gameOver()
-        }
+        }*/
+
+        /*for (n in 0.rangeTo(spikes.liste1.size - 1)) {
+            var rect = spikes.liste1.get(n)
+
+            if (oiseau.r.contains(rect)) gameOver()
+        }*/
     }
 
     fun draw() {

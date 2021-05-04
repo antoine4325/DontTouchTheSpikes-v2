@@ -9,6 +9,7 @@ import com.google.android.material.shape.TriangleEdgeTreatment
 class Oiseau(x: Float, y: Float, val echelle : Float, val view: DrawingView, context: Context): View(context) {
     val oiseauPaint = Paint()
     //val r = RectF(x, y, x+diametre, y + diametre)   //rectangle de l'oiseau
+    var niveau = 1
     var vx = 700F
     var vy = -1150F
     val ay = 3000F
@@ -39,14 +40,35 @@ class Oiseau(x: Float, y: Float, val echelle : Float, val view: DrawingView, con
         r.offset(0.01F*vx, 0F)
         view.nbrTouche ++
         view.checkColor()
+        for (n in 1.rangeTo(5)) {
+            if ( (view.nbrTouche >= (n-1)*10) && (view.nbrTouche <= n*10) ) {
+                niveau = n
+            }
+        }
+
     }
 
     fun update(interval: Float) {
         vy+=interval*ay
         r.offset(vx*interval, vy*interval)
-        var m = false
-        for (n in 0.rangeTo(view.spikes.liste1.size - 1)) {
-            var rect = view.spikes.liste1.get(n)
+        var m = true
+
+        if ( (RectF.intersects(r, view.parois[0].paroi) && (m == true))
+                    || RectF.intersects(r, view.parois[1].paroi) ) {
+                changeDirectionx()
+                view.spikes.path.reset()
+                view.spikes.drawSpikeParoi()
+                view.spikes.drawSpikesLeft()
+                view.spikes.drawSpikesRight((1..5).random(), (2..7).random())
+            }
+
+        else if (RectF.intersects(r, view.parois[2].paroi)
+                    || RectF.intersects(r, view.parois[3].paroi)) view.gameOver()
+
+        view.spikes.interspikes(this)
+
+        /*for (n in 0.rangeTo(view.spikes.liste1.size - 1)) {
+            val rect = view.spikes.liste1.get(n)
 
             if (r.contains(rect)) view.gameOver()
 
@@ -58,20 +80,10 @@ class Oiseau(x: Float, y: Float, val echelle : Float, val view: DrawingView, con
                 view.spikes.drawSpikesLeft(6)
                 view.spikes.drawSpikesRight((1..5).random(), (2..7).random())
             }*/
-            else if (n == view.spikes.liste1.size - 1) m = true
-        }
-
-        if ( (RectF.intersects(r, view.parois[0].paroi) && (m == true))
-                    || RectF.intersects(r, view.parois[1].paroi) ) {
-                changeDirectionx()
-                view.spikes.path.reset()
-                view.spikes.drawSpikeParoi()
-                view.spikes.drawSpikesLeft(6)
-                view.spikes.drawSpikesRight((1..5).random(), (2..7).random())
+            else if (n == view.spikes.liste1.size - 1) {
+                m = true
             }
-
-        else if (RectF.intersects(r, view.parois[2].paroi)
-                    || RectF.intersects(r, view.parois[3].paroi)) view.gameOver()
+        }*/
     }
 
     fun touch() {

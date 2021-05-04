@@ -1,6 +1,7 @@
 package com.anto.donttouchthespikes
 
 import android.graphics.*
+import android.graphics.drawable.shapes.OvalShape
 import android.graphics.drawable.shapes.RectShape
 import androidx.constraintlayout.solver.widgets.Rectangle
 
@@ -43,8 +44,16 @@ class Spikes(val view: DrawingView){
              x += width
          }
      }
+     fun interspikes(oiseau: Oiseau) {
+        for (i in liste1) {
+            if (oiseau.r.contains(i)) view.gameOver()
+        }
 
-     fun drawSpikesLeft(nbrSpikes: Int) {
+     }
+     fun drawSpikesLeft() {
+         var nbresplibre = 6 - view.oiseau.niveau
+         //var nbrSpikes = 13 - 2*nbresplibre
+         var nbrSpikes = 6
          val x = 110F
          var y = 280F
          val width = 125F
@@ -52,8 +61,8 @@ class Spikes(val view: DrawingView){
          var k = (2..7).random()
 
          if (view.oiseau.vx <= 0) {
-             //val elem = liste1.size
-             //liste1.dropLast(elem-1)
+             val elem = liste1.size
+             liste1.dropLast(elem-1)
              for (i in 1..nbrSpikes) {
                  //y = 280F + (3 * width)
                  var x1 = x - halfWidth
@@ -69,9 +78,11 @@ class Spikes(val view: DrawingView){
                  re = RectF(x1 + 10, y1, x + 10 + (width/50), y2)
                  liste1.add(re)
                  paint.color = Color.DKGRAY
-                 y = 280F + (k * width)
+                 //y = 280F + (k * width)
+                 y += 2*width
                  k = (2..7).random()
              }
+
                  //view.canvas.save()
                  //view.canvas.rotate(45F)
                  //re = RectF(120F - (125F/2), 280F + (3 * 125F) + (125F/2), 120F + (125F/50), 280F + (3 * 125F) - (125F/2))
