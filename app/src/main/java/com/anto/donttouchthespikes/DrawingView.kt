@@ -31,7 +31,6 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
     lateinit var thread: Thread
     var totalElapsedTime: Double = 0.0
     var gameOver = false
-    val textPaint = Paint()
     var nbrTouche = 0
     var record = 0
     var firstsetting = false
@@ -117,7 +116,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
             bonbon.dessine(canvas)
             canvas.drawText("Votre score est:   $nbrTouche ",
                     30f, 50f, textPaint)
-            canvas.drawText("Vies restantes : $nbrVies", screenWidth/3, screenHeight/3, textPaint)
+            canvas.drawText("Vies restantes : $nbrVies", screenWidth*3/5, 50f, textPaint)
             holder.unlockCanvasAndPost(canvas)
         }
     }
