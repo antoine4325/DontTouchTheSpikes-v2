@@ -38,6 +38,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
     var oiseau = Oiseau(450F,750F,2F, this, context)
     val spikes = Spikes(this)
     val activity = context as FragmentActivity
+    val rp = RectF(0F, 280F + (3 * 125F) - 4*(125F/2), 50F, 280F + (3 * 125F) - 6*(125/2) )
 
     init {
         backgroundPaint.color = Color.WHITE
@@ -80,6 +81,9 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
             if ((p== parois[3]||p==parois[2]) && RectF.intersects(p.paroi,oiseau.r)){
                 gameOver()
             }
+        }
+        if (RectF.intersects(oiseau.r, spikes.re)) {
+            gameOver()
         }
     }
 

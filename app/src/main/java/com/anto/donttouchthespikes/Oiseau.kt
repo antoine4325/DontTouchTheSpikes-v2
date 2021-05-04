@@ -15,7 +15,6 @@ class Oiseau(x: Float, y: Float, val echelle : Float, val view: DrawingView, con
     var bmp: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.oiseau)
     val r = RectF(0F, 0F, 95F, 63F)
     var flipped = false
-
     init {
         oiseauPaint.color=Color.RED
     }
@@ -45,30 +44,34 @@ class Oiseau(x: Float, y: Float, val echelle : Float, val view: DrawingView, con
     fun update(interval: Float) {
         vy+=interval*ay
         r.offset(vx*interval, vy*interval)
-        if (RectF.intersects(r, view.parois[0].paroi)
-                || RectF.intersects(r, view.parois[1].paroi)) {
-            changeDirectionx()
-            view.spikes.path.reset()
-            view.spikes.drawSpikeParoi()
-            view.spikes.drawSpikesLeft((1..13).random(),(2..7).random())
-            view.spikes.drawSpikesRight((1..5).random(), (2..7).random())
+        var m = false
+        for (n in 0.rangeTo(view.spikes.liste1.size - 1)) {
+            var rect = view.spikes.liste1.get(n)
 
+            if (r.contains(rect)) view.gameOver()
+
+            /*else if ( (RectF.intersects(r, view.parois[0].paroi) && (r.contains(rect) == false))
+                    || RectF.intersects(r, view.parois[1].paroi) ) {
+                changeDirectionx()
+                view.spikes.path.reset()
+                view.spikes.drawSpikeParoi()
+                view.spikes.drawSpikesLeft(6)
+                view.spikes.drawSpikesRight((1..5).random(), (2..7).random())
+            }*/
+            else if (n == view.spikes.liste1.size - 1) m = true
         }
 
+        if ( (RectF.intersects(r, view.parois[0].paroi) && (m == true))
+                    || RectF.intersects(r, view.parois[1].paroi) ) {
+                changeDirectionx()
+                view.spikes.path.reset()
+                view.spikes.drawSpikeParoi()
+                view.spikes.drawSpikesLeft(6)
+                view.spikes.drawSpikesRight((1..5).random(), (2..7).random())
+            }
+
         else if (RectF.intersects(r, view.parois[2].paroi)
-                || RectF.intersects(r, view.parois[3].paroi)) view.gameOver()
-
-        /*for (rect in view.spikes.liste1) {
-            if (RectF.intersects(r, rect)) {
-                view.gameOver()
-            }
-        }*/
-        /*for (rect in spikes.liste2) {
-            if (RectF.intersects(r, rect)) {
-                view.gameOver()
-            }
-        }*/
-
+                    || RectF.intersects(r, view.parois[3].paroi)) view.gameOver()
     }
 
     fun touch() {
