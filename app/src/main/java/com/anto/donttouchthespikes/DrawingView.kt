@@ -24,6 +24,7 @@ import kotlin.random.Random
 class DrawingView @JvmOverloads constructor(context: Context, attributes: AttributeSet? = null, defStyleAttr: Int = 0) : SurfaceView(context, attributes,defStyleAttr), SurfaceHolder.Callback, Runnable {
     lateinit var canvas: Canvas
     val backgroundPaint = Paint()
+    val textPaint = Paint()
     var screenWidth = 0f
     var screenHeight = 0f
     var drawing = false
@@ -43,10 +44,10 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
             Paroi(0f, 0f, 0f, 0f),
             Paroi(0f, 0f, 0f, 0f),
             Paroi(0f, 0f, 0f, 0f))
-    var oiseau = Oiseau(450F,750F,2F, this, context)
+    var oiseau = Oiseau(2F, this, context)
     val activity = context as FragmentActivity
     var nbrVies = 1
-    val bonbon = Bonbon(context)
+    val bonbon = Bonbon(context, this)
 
     init {
         backgroundPaint.color = Color.WHITE
@@ -102,7 +103,6 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
     fun updatePositions(elapsedTimeMS: Double) {
         val interval = (elapsedTimeMS / 1000.0).toFloat()
         oiseau.update(interval)
-
     }
 
 
@@ -117,6 +117,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
             bonbon.dessine(canvas)
             canvas.drawText("Votre score est:   $nbrTouche ",
                     30f, 50f, textPaint)
+            canvas.drawText("Vies restantes : $nbrVies", screenWidth/3, screenHeight/3, textPaint)
             holder.unlockCanvasAndPost(canvas)
         }
     }
@@ -125,10 +126,13 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
         mp.stop()
         mp.prepare()
         drawing = false
-        if (nbrTouche>record)
-        {record= nbrTouche
-        showGameOverDialog("Vous avez battu votre record!!")}
-        else{showGameOverDialog("Vous avez perdu!")}
+        if (nbrTouche>record) {
+            record= nbrTouche
+            showGameOverDialog("Vous avez battu votre record!!")
+        }
+        else {
+            showGameOverDialog("Vous avez perdu!")
+        }
         gameOver = true
     }
 
@@ -166,6 +170,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
             totalElapsedTime = elapsedTimeMS / 1000.0
             updatePositions(elapsedTimeMS)
             draw()
+            if (nbrVies <= 0) gameOver()
             previousFrameTime = currentTime
         }
     }
