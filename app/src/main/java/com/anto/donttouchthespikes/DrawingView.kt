@@ -32,8 +32,9 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
     var nbrTouche = 0
     var record = 0
     var firstsetting = false
+    val nbrSlotsPiques = 12
     val random = Random
-    val couleurs = arrayOf(Color.BLACK, Color.BLUE, Color.CYAN, Color.DKGRAY,
+    val couleurs = arrayOf(Color.BLACK, Color.BLUE, Color.CYAN,
             Color.GREEN, Color.LTGRAY, Color.MAGENTA, Color.RED, Color.WHITE, Color.YELLOW)
     val mp = MediaPlayer.create(context, R.raw.le_temps_est_bon)
     var parois: Array<Paroi> = arrayOf(Paroi(0f, 0f, 0f, 0f),
