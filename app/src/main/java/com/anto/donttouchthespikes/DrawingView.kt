@@ -34,7 +34,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
     var firstsetting = false
     val nbrSlotsPiques = 12
     val random = Random
-    val couleurs = arrayOf(Color.BLACK, Color.BLUE, Color.CYAN, Color.DKGRAY,
+    val couleurs = arrayOf(Color.BLACK, Color.BLUE, Color.CYAN,
             Color.GREEN, Color.LTGRAY, Color.MAGENTA, Color.RED, Color.WHITE, Color.YELLOW)
     val mp = MediaPlayer.create(context, R.raw.le_temps_est_bon)
     var parois: Array<Paroi> = arrayOf(Paroi(0f, 0f, 0f, 0f),
@@ -102,22 +102,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
         val interval = (elapsedTimeMS / 1000.0).toFloat()
 
         oiseau.update(interval, spikes)
-        for (p in parois){
-            if ((p== parois[3]||p==parois[2]) && RectF.intersects(p.paroi,oiseau.r)){
-                gameOver()
-            }
-        }
-        /*if (RectF.intersects(oiseau.r, spikes.re)) {
-            gameOver()
-        }*/
-
-        for (n in spikes.liste1) {
-            //var rect = spikes.liste1.get(n)
-
-            if (oiseau.r.contains(n)) gameOver()
-        }
     }
-
 
 
     fun draw() {

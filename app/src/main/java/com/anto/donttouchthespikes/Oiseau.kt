@@ -19,7 +19,7 @@ class Oiseau(val echelle : Float, val view: DrawingView, context: Context): View
     var vy=0F
     var ay =0F
     var bmp: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.oiseau)
-    val r = RectF(0F, 0F, 95F, 63F)
+    val r = RectF(0F+300F, 0F+500F, 95F+300F, 63F+500F)
     var flipped = false
     val random = Random
 
@@ -60,7 +60,12 @@ class Oiseau(val echelle : Float, val view: DrawingView, context: Context): View
         view.nbrTouche ++
         view.checkColor()
         if (view.nbrTouche == view.bonbon.nextVisible) {
-            view.bonbon.carre.offsetTo(150f, random.nextFloat()*view.screenHeight*0.9f+50)
+            if (vx < 0) {
+                view.bonbon.carre.offsetTo(150f, random.nextFloat()*view.screenHeight*0.8f+150)
+            }
+            else {
+                view.bonbon.carre.offsetTo(view.screenWidth-270f, random.nextFloat()*view.screenHeight*0.8f+150)
+            }
             view.bonbon.visible = true
         }
         for (n in 1.rangeTo(5)) {
