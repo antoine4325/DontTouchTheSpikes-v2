@@ -9,6 +9,7 @@ import com.google.android.material.shape.TriangleEdgeTreatment
 class Oiseau(x: Float, y: Float, val echelle : Float, val view: DrawingView, context: Context): View(context) {
     val oiseauPaint = Paint()
     //val r = RectF(x, y, x+diametre, y + diametre)   //rectangle de l'oiseau
+    val re0 = RectF(0f, 0f, 0f, 0f)
     var niveau = 1
     var vx = 700F
     var vy = -1150F
@@ -40,6 +41,8 @@ class Oiseau(x: Float, y: Float, val echelle : Float, val view: DrawingView, con
         r.offset(0.01F*vx, 0F)
         view.nbrTouche ++
         view.checkColor()
+        //view.spikes.liste1 = mutableListOf(re0)
+        //view.spikes.liste2 = mutableListOf(re0)
         for (n in 1.rangeTo(5)) {
             if ( (view.nbrTouche >= (n-1)*10) && (view.nbrTouche <= n*10) ) {
                 niveau = n
@@ -67,32 +70,28 @@ class Oiseau(x: Float, y: Float, val echelle : Float, val view: DrawingView, con
                 view.spikes.path.reset()
                 view.spikes.drawSpikeParoi()
                 view.spikes.drawSpikesLeft()
-                view.spikes.drawSpikesRight((1..5).random(), (2..7).random())
+                view.spikes.drawSpikesRight()
             }
 
         else if (RectF.intersects(r, view.parois[2].paroi)
                     || RectF.intersects(r, view.parois[3].paroi)) view.gameOver()
 
-        //spikes.interspikes(this)
 
-
-        /*for (n in 0.rangeTo(view.spikes.liste1.size - 1)) {
-            val rect = view.spikes.liste1.get(n)
-
-            if (r.contains(rect)) view.gameOver()
-
-            /*else if ( (RectF.intersects(r, view.parois[0].paroi) && (r.contains(rect) == false))
-                    || RectF.intersects(r, view.parois[1].paroi) ) {
-                changeDirectionx()
-                view.spikes.path.reset()
-                view.spikes.drawSpikeParoi()
-                view.spikes.drawSpikesLeft(6)
-                view.spikes.drawSpikesRight((1..5).random(), (2..7).random())
-            }*/
-            else if (n == view.spikes.liste1.size - 1) {
-                m = true
+        for (rect in view.spikes.liste1) {
+            if (r.contains(rect)) {
+                view.gameOver()
+                view.spikes.liste1 = mutableListOf(re0)
             }
-        }*/
+
+        }
+
+        for (rect in view.spikes.liste2) {
+            if (r.contains(rect)) {
+                view.gameOver()
+                view.spikes.liste2 = mutableListOf(re0)
+            }
+        }
+
     }
 
     fun touch() {

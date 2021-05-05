@@ -111,6 +111,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
         drawing = false
         showGameOverDialog("Vous avez perdu!")
         gameOver = true
+        oiseau.reset(screenWidth, screenHeight)
     }
 
     fun newGame() {
