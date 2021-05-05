@@ -51,10 +51,18 @@ class Oiseau(x: Float, y: Float, val echelle : Float, val view: DrawingView, con
 
     }
 
-    fun update(interval: Float) {
+    fun update(interval: Float, spikes: Spikes) {
+
+        /*for (rect in spikes.liste1){
+            if (r.contains(rect)) view.gameOver()
+        }*/
+
+
         vy+=interval*ay
         r.offset(vx*interval, vy*interval)
         var m = true
+
+
 
         if ( (RectF.intersects(r, view.parois[0].paroi) && (m == true))
                     || RectF.intersects(r, view.parois[1].paroi) ) {
@@ -67,6 +75,7 @@ class Oiseau(x: Float, y: Float, val echelle : Float, val view: DrawingView, con
 
         else if (RectF.intersects(r, view.parois[2].paroi)
                     || RectF.intersects(r, view.parois[3].paroi)) view.gameOver()
+
 
         for (rect in view.spikes.liste1) {
             if (r.contains(rect)) {
