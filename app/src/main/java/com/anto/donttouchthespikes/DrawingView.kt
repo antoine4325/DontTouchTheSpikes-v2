@@ -1,14 +1,12 @@
 package com.anto.donttouchthespikes
 
+import android.graphics.Canvas
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
+import android.graphics.*
 import android.media.MediaPlayer
-import android.graphics.RectF
 import android.os.Bundle
 import android.util.AttributeSet
 import android.view.MotionEvent
@@ -47,6 +45,8 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
     val activity = context as FragmentActivity
     var nbrVies = 1
     val bonbon = Bonbon(context, this)
+    val spikes = Spikes(this)
+    val rp = RectF(0F, 280F + (3 * 125F) - 4*(125F/2), 50F, 280F + (3 * 125F) - 6*(125/2) )
 
     init {
         backgroundPaint.color = Color.WHITE
@@ -68,8 +68,8 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
         nbrVies = 1
         parois = arrayOf(Paroi(0f, 0f, 50f, screenHeight), //gauche
                 Paroi(screenWidth-50f, 0f, screenWidth, screenHeight), //droite
-                Paroi(0f,0f, screenWidth, 50f), //haut
-                Paroi(0f, screenHeight-50f, screenWidth, screenHeight) //bas
+                Paroi(0f,0f, screenWidth, 50f + 105f), //haut
+                Paroi(0f, screenHeight - 155f, screenWidth, screenHeight) //bas
         )
         oiseau.reset(screenWidth, screenHeight)
         bonbon.reset()
@@ -86,22 +86,36 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
         bonbon.reset()
         oiseau.firstSet(screenWidth, screenHeight)
         backgroundPaint.color = Color.WHITE
+
     }
 
     override fun onTouchEvent(e: MotionEvent): Boolean {
         val action = e.action
         if (action == MotionEvent.ACTION_DOWN
                 || action == MotionEvent.ACTION_MOVE) {
-
             if (firstsetting == true ) oiseau.touch()
-
         }
         return true
     }
 
     fun updatePositions(elapsedTimeMS: Double) {
         val interval = (elapsedTimeMS / 1000.0).toFloat()
-        oiseau.update(interval)
+
+        oiseau.update(interval, spikes)
+        for (p in parois){
+            if ((p== parois[3]||p==parois[2]) && RectF.intersects(p.paroi,oiseau.r)){
+                gameOver()
+            }
+        }
+        /*if (RectF.intersects(oiseau.r, spikes.re)) {
+            gameOver()
+        }*/
+
+        for (n in spikes.liste1) {
+            //var rect = spikes.liste1.get(n)
+
+            if (oiseau.r.contains(n)) gameOver()
+        }
     }
 
 
@@ -113,10 +127,12 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
                     canvas.height.toFloat(), backgroundPaint)
             for (i in parois) i.draw(canvas)
             oiseau.dessine(canvas)
+            canvas.drawPath(spikes.path, spikes.paint)
             bonbon.dessine(canvas)
             canvas.drawText("Votre score est:   $nbrTouche ",
                     30f, 50f, textPaint)
             canvas.drawText("Vies restantes : $nbrVies", screenWidth*3/5, 50f, textPaint)
+
             holder.unlockCanvasAndPost(canvas)
         }
     }
@@ -133,6 +149,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
             showGameOverDialog("Vous avez perdu!")
         }
         gameOver = true
+        oiseau.reset(screenWidth, screenHeight)
     }
 
     fun newGame() {

@@ -1,8 +1,10 @@
 package com.anto.donttouchthespikes
 
+import android.graphics.Canvas
 import android.content.Context
 import android.graphics.*
 import android.view.View
+import com.google.android.material.shape.TriangleEdgeTreatment
 import kotlin.random.Random
 import androidx.fragment.app.FragmentActivity
 import kotlinx.android.synthetic.main.activity_main.view.*
@@ -11,6 +13,8 @@ import kotlin.coroutines.*
 
 class Oiseau(val echelle : Float, val view: DrawingView, context: Context): View(context) {
     val oiseauPaint = Paint()
+    val re0 = RectF(0f, 0f, 0f, 0f)
+    var niveau = 1
     var vx=0F
     var vy=0F
     var ay =0F
@@ -59,22 +63,69 @@ class Oiseau(val echelle : Float, val view: DrawingView, context: Context): View
             view.bonbon.carre.offsetTo(150f, random.nextFloat()*view.screenHeight*0.9f+50)
             view.bonbon.visible = true
         }
+        for (n in 1.rangeTo(5)) {
+            if ( (view.nbrTouche >= (n-1)*10) && (view.nbrTouche <= n*10) ) {
+                niveau = n
+            }
+        }
+
     }
 
-    fun update(interval: Float) {
+    fun update(interval: Float, spikes: Spikes) {
+
+        /*for (rect in spikes.liste1){
+            if (r.contains(rect)) view.gameOver()
+        }*/
+
+
         vy+=interval*ay
         r.offset(vx*interval, vy*interval)
-        if (RectF.intersects(r, view.parois[0].paroi)
-                || RectF.intersects(r, view.parois[1].paroi)) changeDirectionx()
-        else if (view.bonbon.visible && RectF.intersects(r, view.bonbon.carre)) {
-            view.bonbon.touch()
-        }
+        var m = true
+
+
+
+        if ( (RectF.intersects(r, view.parois[0].paroi) && (m == true))
+                    || RectF.intersects(r, view.parois[1].paroi) ) {
+                changeDirectionx()
+                view.spikes.path.reset()
+                view.spikes.drawSpikeParoi()
+                view.spikes.drawSpikesLeft()
+                view.spikes.drawSpikesRight()
+            }
+
         else if (RectF.intersects(r, view.parois[2].paroi)
-                || RectF.intersects(r, view.parois[3].paroi)) {
+                    || RectF.intersects(r, view.parois[3].paroi)) {
             view.nbrVies --
             if (view.nbrVies > 0) {
                 r.offsetTo(view.screenWidth/2, view.screenHeight/2)
                 touch()
+            }
+        }
+        
+        else if (view.bonbon.visible && RectF.intersects(r, view.bonbon.carre)) {
+            view.bonbon.touch()
+        }
+
+        for (rect in view.spikes.liste1) {
+            if (r.contains(rect)) {
+                view.nbrVies --
+                if (view.nbrVies > 0) {
+                    r.offsetTo(view.screenWidth/2, view.screenHeight/2)
+                    touch()
+                }
+                view.spikes.liste1 = mutableListOf(re0)
+            }
+
+        }
+
+        for (rect in view.spikes.liste2) {
+            if (r.contains(rect)) {
+                view.nbrVies --
+                if (view.nbrVies > 0) {
+                    r.offsetTo(view.screenWidth/2, view.screenHeight/2)
+                    touch()
+                }
+                view.spikes.liste2 = mutableListOf(re0)
             }
         }
     }
