@@ -99,8 +99,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
     fun updatePositions(elapsedTimeMS: Double) {
         val interval = (elapsedTimeMS / 1000.0).toFloat()
         oiseau.update(interval)
-
-
+    }
 
     fun draw() {
         if (holder.surface.isValid) {
