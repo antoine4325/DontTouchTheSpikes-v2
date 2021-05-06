@@ -46,7 +46,6 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
     var nbrVies = 1
     val bonbon = Bonbon(context, this)
     val spikes = Spikes(this)
-    val rp = RectF(0F, 280F + (3 * 125F) - 4*(125F/2), 50F, 280F + (3 * 125F) - 6*(125/2) )
 
     init {
         backgroundPaint.color = Color.WHITE
@@ -100,10 +99,8 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
 
     fun updatePositions(elapsedTimeMS: Double) {
         val interval = (elapsedTimeMS / 1000.0).toFloat()
-
-        oiseau.update(interval, spikes)
+        oiseau.update(interval)
     }
-
 
     fun draw() {
         if (holder.surface.isValid) {
@@ -135,6 +132,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
         }
         gameOver = true
         oiseau.reset(screenWidth, screenHeight)
+        oiseau.niveau = 1
     }
 
     fun newGame() {
@@ -197,10 +195,6 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
 
     override fun surfaceDestroyed(holder: SurfaceHolder) {
     }
-
-
-
-
 
     fun showGameOverDialog(messageId: String) { //changement: Int-> string
         class GameResult: DialogFragment() {
