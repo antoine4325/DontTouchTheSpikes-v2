@@ -61,10 +61,10 @@ class Oiseau(val echelle : Float, val view: DrawingView, context: Context): View
         view.checkColor()
         if (view.nbrTouche == view.bonbon.nextVisible) {
             if (vx < 0) {
-                view.bonbon.carre.offsetTo(150f, random.nextFloat()*view.screenHeight*0.8f+150)
+                view.bonbon.carre.offsetTo(150f, random.nextFloat()*view.screenHeight*0.7f+150)
             }
             else {
-                view.bonbon.carre.offsetTo(view.screenWidth-270f, random.nextFloat()*view.screenHeight*0.8f+150)
+                view.bonbon.carre.offsetTo(view.screenWidth-270f, random.nextFloat()*view.screenHeight*0.7f+150)
             }
             view.bonbon.visible = true
         }
