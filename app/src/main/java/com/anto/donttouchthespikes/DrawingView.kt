@@ -72,6 +72,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
         )
         oiseau.reset(screenWidth, screenHeight)
         bonbon.reset()
+        spikes.reset(screenWidth, screenHeight)
         if (firstsetting== false) firstsetting = true
         backgroundPaint.color = Color.WHITE
     }

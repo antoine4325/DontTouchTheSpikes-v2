@@ -93,17 +93,8 @@ class Oiseau(val echelle : Float, val view: DrawingView, context: Context): View
             }
 
 
-        else if (r.contains(view.spikes.rhaut)
-                    || r.contains(view.spikes.rbas)) view.gameOver()
-
-        else if (RectF.intersects(r, view.parois[2].paroi)
-                    || RectF.intersects(r, view.parois[3].paroi)) {
-            view.nbrVies --
-            if (view.nbrVies > 0) {
-                r.offsetTo(view.screenWidth/2, view.screenHeight/2)
-                touch()
-            }
-        }
+        else if (RectF.intersects(r, view.spikes.rhaut)
+                    || RectF.intersects(r, view.spikes.rbas)) ouch()
         
         else if (view.bonbon.visible && RectF.intersects(r, view.bonbon.carre)) {
             view.bonbon.touch()
@@ -111,11 +102,7 @@ class Oiseau(val echelle : Float, val view: DrawingView, context: Context): View
 
         for (rect in view.spikes.liste1) {
             if (r.contains(rect)) {
-                view.nbrVies --
-                if (view.nbrVies > 0) {
-                    r.offsetTo(view.screenWidth/2, view.screenHeight/2)
-                    touch()
-                }
+                ouch()
                 view.spikes.liste1 = mutableListOf(re0)
             }
 
@@ -123,11 +110,7 @@ class Oiseau(val echelle : Float, val view: DrawingView, context: Context): View
 
         for (rect in view.spikes.liste2) {
             if (r.contains(rect)) {
-                view.nbrVies --
-                if (view.nbrVies > 0) {
-                    r.offsetTo(view.screenWidth/2, view.screenHeight/2)
-                    touch()
-                }
+                ouch()
                 view.spikes.liste2 = mutableListOf(re0)
             }
         }
@@ -135,8 +118,14 @@ class Oiseau(val echelle : Float, val view: DrawingView, context: Context): View
 
     fun touch() {
         vy =-1150F
+    }
 
-
+    fun ouch() {
+        view.nbrVies --
+        if (view.nbrVies > 0) {
+            r.offsetTo(view.screenWidth/2, view.screenHeight/2)
+            touch()
+        }
     }
 
     private fun Bitmap.flip(x: Float, y: Float): Bitmap {
