@@ -32,7 +32,6 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
     var nbrTouche = 0
     var record = 0
     var firstsetting = false
-    val nbrSlotsPiques = 12
     val random = Random
     val couleurs = arrayOf(Color.BLACK, Color.BLUE, Color.CYAN,
             Color.GREEN, Color.LTGRAY, Color.MAGENTA, Color.RED, Color.WHITE, Color.YELLOW)
@@ -65,6 +64,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
     fun reset() {
         nbrTouche = 0
         nbrVies = 1
+        oiseau.niveau = 1
         parois = arrayOf(Paroi(0f, 0f, 50f, screenHeight), //gauche
                 Paroi(screenWidth-50f, 0f, screenWidth, screenHeight), //droite
                 Paroi(0f,0f, screenWidth, 50f + 105f), //haut
@@ -133,7 +133,6 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
         }
         gameOver = true
         oiseau.reset(screenWidth, screenHeight)
-        oiseau.niveau = 1
     }
 
     fun newGame() {
