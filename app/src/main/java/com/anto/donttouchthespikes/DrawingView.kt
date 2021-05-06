@@ -113,6 +113,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
             bonbon.dessine(canvas)
             canvas.drawText("Votre score est:   $nbrTouche ",
                     30f, 50f, textPaint)
+            canvas.drawText("Niveau: ${oiseau.niveau}", 30f, 100f, textPaint)
             canvas.drawText("Vies restantes : $nbrVies", screenWidth*3/5, 50f, textPaint)
 
             holder.unlockCanvasAndPost(canvas)
@@ -202,7 +203,8 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
                 val builder = AlertDialog.Builder(getActivity())
                 builder.setTitle(messageId)
                 builder.setMessage("Votre score est:   "+ nbrTouche.toString()+ "\n"
-                        + "Votre record est:    $record")
+                        + "Votre record est:    $record"+ "\n"
+                        + "Vous êtes arrivé au niveau:      ${oiseau.niveau}")
                 builder.setPositiveButton("Redemarrer une partie",
                         DialogInterface.OnClickListener { _, _->newGame()}
                 )
