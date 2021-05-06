@@ -15,8 +15,8 @@ class Spikes(val view: DrawingView) {
     var rbas = RectF(0f, 0f, 0f, 0f) //Pics bas
     var liste1: MutableList<RectF> = mutableListOf(re0)
     var liste2: MutableList<RectF> = mutableListOf(re0)
-    val nbresplibre = 6 - view.oiseau.niveau
-    var nbrSpikes = 13 - 2*nbresplibre
+    var nbresplibre = 0
+    var nbrSpikes = 0
     var k = (1..12).random()
     val width = 125F
     val halfWidth = width / 2
@@ -50,6 +50,8 @@ class Spikes(val view: DrawingView) {
     fun drawSpikesLeft() {
         val x = 110F
         var y = 280F
+        nbresplibre = 6 - view.oiseau.niveau
+        nbrSpikes = 8 - (nbresplibre)
 
         if (view.oiseau.vx <= 0) {
             view.spikes.liste1 = mutableListOf(re0)
@@ -71,6 +73,8 @@ class Spikes(val view: DrawingView) {
     fun drawSpikesRight(){
         val x = view.screenWidth - 50F
         var y = 280F
+        nbresplibre = 6 - view.oiseau.niveau
+        nbrSpikes = 8 - (nbresplibre)
 
         if (view.oiseau.vx >= 0) {
             view.spikes.liste2 = mutableListOf(re0)
