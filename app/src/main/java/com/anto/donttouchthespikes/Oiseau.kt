@@ -5,18 +5,24 @@ import android.content.Context
 import android.graphics.*
 import android.view.View
 import com.google.android.material.shape.TriangleEdgeTreatment
+import kotlin.random.Random
+import androidx.fragment.app.FragmentActivity
+import kotlinx.android.synthetic.main.activity_main.view.*
+import java.util.*
+import kotlin.coroutines.*
 
-class Oiseau(x: Float, y: Float, val echelle : Float, val view: DrawingView, context: Context): View(context) {
+class Oiseau(val echelle : Float, val view: DrawingView, context: Context): View(context) {
     val oiseauPaint = Paint()
-    //val r = RectF(x, y, x+diametre, y + diametre)   //rectangle de l'oiseau
     val re0 = RectF(0f, 0f, 0f, 0f)
     var niveau = 1
-    var vx = 700F
-    var vy = -1150F
-    val ay = 3000F
+    var vx=0F
+    var vy=0F
+    var ay =0F
     var bmp: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.oiseau)
     val r = RectF(0F, 0F, 95F, 63F)
     var flipped = false
+    val random = Random
+
     init {
         oiseauPaint.color=Color.RED
     }
@@ -28,7 +34,18 @@ class Oiseau(x: Float, y: Float, val echelle : Float, val view: DrawingView, con
         r.bottom = sH/2 + 63*echelle
         vx = 700F
         vy = -1150F
+        ay= 3000F
         if (flipped) bmp=bmp.flip(-1f, 1f)
+    }
+
+    fun firstSet(sW: Float, sH: Float) {
+        r.left = sW/2
+        r.top = sH/2
+        r.right = sW/2 + 95*echelle
+        r.bottom = sH/2 + 63*echelle
+        vx = 0F
+        vy = 0F
+        ay = 0F
     }
 
     fun dessine(canvas: Canvas) {
@@ -38,9 +55,16 @@ class Oiseau(x: Float, y: Float, val echelle : Float, val view: DrawingView, con
     fun changeDirectionx() {
         bmp = bmp.flip(-1f, 1f)
         vx = -vx
-        r.offset(0.01F*vx, 0F)
+        if (vx > 0) vx += 7
+        r.offset(vx*0.01f, 0F)
         view.nbrTouche ++
         view.checkColor()
+
+        if (view.nbrTouche == view.bonbon.nextVisible) {
+            view.bonbon.carre.offsetTo(150f, random.nextFloat()*view.screenHeight*0.9f+50)
+            view.bonbon.visible = true
+        }
+
         for (n in 1.rangeTo(5)) {
             if ( (view.nbrTouche >= (n-1)*10) && (view.nbrTouche <= n*10) ) {
                 niveau = n
@@ -63,12 +87,30 @@ class Oiseau(x: Float, y: Float, val echelle : Float, val view: DrawingView, con
                 view.spikes.drawSpikesRight()
             }
 
+
         else if (r.contains(view.spikes.rhaut)
                     || r.contains(view.spikes.rbas)) view.gameOver()
 
+        else if (RectF.intersects(r, view.parois[2].paroi)
+                    || RectF.intersects(r, view.parois[3].paroi)) {
+            view.nbrVies --
+            if (view.nbrVies > 0) {
+                r.offsetTo(view.screenWidth/2, view.screenHeight/2)
+                touch()
+            }
+        }
+        
+        else if (view.bonbon.visible && RectF.intersects(r, view.bonbon.carre)) {
+            view.bonbon.touch()
+        }
+
         for (rect in view.spikes.liste1) {
             if (r.contains(rect)) {
-                view.gameOver()
+                view.nbrVies --
+                if (view.nbrVies > 0) {
+                    r.offsetTo(view.screenWidth/2, view.screenHeight/2)
+                    touch()
+                }
                 view.spikes.liste1 = mutableListOf(re0)
             }
 
@@ -76,15 +118,20 @@ class Oiseau(x: Float, y: Float, val echelle : Float, val view: DrawingView, con
 
         for (rect in view.spikes.liste2) {
             if (r.contains(rect)) {
-                view.gameOver()
+                view.nbrVies --
+                if (view.nbrVies > 0) {
+                    r.offsetTo(view.screenWidth/2, view.screenHeight/2)
+                    touch()
+                }
                 view.spikes.liste2 = mutableListOf(re0)
             }
         }
-
     }
 
     fun touch() {
         vy =-1150F
+
+
     }
 
     private fun Bitmap.flip(x: Float, y: Float): Bitmap {
