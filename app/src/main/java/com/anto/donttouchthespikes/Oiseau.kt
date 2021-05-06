@@ -41,30 +41,20 @@ class Oiseau(x: Float, y: Float, val echelle : Float, val view: DrawingView, con
         r.offset(0.01F*vx, 0F)
         view.nbrTouche ++
         view.checkColor()
-        //view.spikes.liste1 = mutableListOf(re0)
-        //view.spikes.liste2 = mutableListOf(re0)
         for (n in 1.rangeTo(5)) {
             if ( (view.nbrTouche >= (n-1)*10) && (view.nbrTouche <= n*10) ) {
                 niveau = n
             }
+            else if (view.nbrTouche >= 50) niveau = 5
         }
 
     }
 
-    fun update(interval: Float, spikes: Spikes) {
-
-        /*for (rect in spikes.liste1){
-            if (r.contains(rect)) view.gameOver()
-        }*/
-
-
+    fun update(interval: Float) {
         vy+=interval*ay
         r.offset(vx*interval, vy*interval)
-        var m = true
 
-
-
-        if ( (RectF.intersects(r, view.parois[0].paroi) && (m == true))
+        if ( RectF.intersects(r, view.parois[0].paroi)
                     || RectF.intersects(r, view.parois[1].paroi) ) {
                 changeDirectionx()
                 view.spikes.path.reset()
@@ -73,9 +63,8 @@ class Oiseau(x: Float, y: Float, val echelle : Float, val view: DrawingView, con
                 view.spikes.drawSpikesRight()
             }
 
-        else if (RectF.intersects(r, view.parois[2].paroi)
-                    || RectF.intersects(r, view.parois[3].paroi)) view.gameOver()
-
+        else if (r.contains(view.spikes.rhaut)
+                    || r.contains(view.spikes.rbas)) view.gameOver()
 
         for (rect in view.spikes.liste1) {
             if (r.contains(rect)) {
