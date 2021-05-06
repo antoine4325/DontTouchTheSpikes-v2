@@ -32,7 +32,6 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
     var nbrTouche = 0
     var record = 0
     var firstsetting = false
-    val nbrSlotsPiques = 12
     val random = Random
     val couleurs = arrayOf(Color.BLACK, Color.BLUE, Color.CYAN, Color.DKGRAY,
             Color.GREEN, Color.LTGRAY, Color.MAGENTA, Color.RED, Color.WHITE, Color.YELLOW)
@@ -46,7 +45,6 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
     var nbrVies = 1
     val bonbon = Bonbon(context, this)
     val spikes = Spikes(this)
-    val rp = RectF(0F, 280F + (3 * 125F) - 4*(125F/2), 50F, 280F + (3 * 125F) - 6*(125/2) )
 
     init {
         backgroundPaint.color = Color.WHITE
@@ -100,23 +98,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
 
     fun updatePositions(elapsedTimeMS: Double) {
         val interval = (elapsedTimeMS / 1000.0).toFloat()
-
-        oiseau.update(interval, spikes)
-        for (p in parois){
-            if ((p== parois[3]||p==parois[2]) && RectF.intersects(p.paroi,oiseau.r)){
-                gameOver()
-            }
-        }
-        /*if (RectF.intersects(oiseau.r, spikes.re)) {
-            gameOver()
-        }*/
-
-        for (n in spikes.liste1) {
-            //var rect = spikes.liste1.get(n)
-
-            if (oiseau.r.contains(n)) gameOver()
-        }
-    }
+        oiseau.update(interval)
 
 
 
@@ -150,6 +132,7 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
         }
         gameOver = true
         oiseau.reset(screenWidth, screenHeight)
+        oiseau.niveau = 1
     }
 
     fun newGame() {
@@ -212,10 +195,6 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
 
     override fun surfaceDestroyed(holder: SurfaceHolder) {
     }
-
-
-
-
 
     fun showGameOverDialog(messageId: String) { //changement: Int-> string
         class GameResult: DialogFragment() {
