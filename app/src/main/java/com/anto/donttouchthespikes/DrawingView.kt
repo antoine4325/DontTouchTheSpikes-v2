@@ -108,9 +108,9 @@ class DrawingView @JvmOverloads constructor(context: Context, attributes: Attrib
             canvas = holder.lockCanvas()
             canvas.drawRect(0f, 0f, canvas.width.toFloat(),
                     canvas.height.toFloat(), backgroundPaint)
-            for (i in parois) i.draw(canvas)
             oiseau.dessine(canvas)
             canvas.drawPath(spikes.path, spikes.paint)
+            for (i in parois) i.draw(canvas)
             bonbon.dessine(canvas)
             canvas.drawText("Votre score est:   $nbrTouche ",
                     30f, 50f, textPaint)
